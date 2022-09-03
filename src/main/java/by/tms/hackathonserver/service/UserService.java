@@ -15,13 +15,21 @@ public class UserService {
     private UserRepository userRepository;
 
 
+    public User getUser(String email, String password){
+        Optional<User> tempUser = userRepository.findByEmailAndPassword(email, password);
+        if(tempUser.isPresent()){
+            return tempUser.get();
+        }else{
+            throw new RuntimeException("User not found");
+        }
+    }
+
     public User save(User user) {
         Optional<User> dataUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername()));
 
         if(dataUser.isPresent()){
             throw new RuntimeException("User already exist");
         }
-        user.setId(10);
         return userRepository.save(user);
     }
 
