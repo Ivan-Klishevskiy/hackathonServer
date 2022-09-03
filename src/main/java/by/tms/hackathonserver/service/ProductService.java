@@ -1,13 +1,16 @@
 package by.tms.hackathonserver.service;
 
 
+import by.tms.hackathonserver.dto.response.ProductResponse;
 import by.tms.hackathonserver.model.Product;
 import by.tms.hackathonserver.model.User;
 import by.tms.hackathonserver.repository.ProductRepository;
 import by.tms.hackathonserver.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +23,20 @@ public class ProductService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ModelMapper mapper;
 
-    public List<Product> getAll(){
-        return productRepository.findAll();
+
+    public List<ProductResponse> getAll(){
+        List<Product> allProducts = productRepository.findAll();
+        List<ProductResponse> listProductResponse = new ArrayList<>();
+        for (Product tempProduct : allProducts) {
+            User tempUser = userRepository.findByUsername(tempProduct.getCreatorUsername());
+            ProductResponse productResponse = mapper.map(tempProduct, ProductResponse.class);
+            productResponse.setUser(tempUser);
+            listProductResponse.add(productResponse);
+        }
+        return listProductResponse;
     }
 
     public Product save(Product product) {

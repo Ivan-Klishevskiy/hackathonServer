@@ -1,6 +1,7 @@
 package by.tms.hackathonserver.controller;
 
 
+import by.tms.hackathonserver.dto.response.ProductResponse;
 import by.tms.hackathonserver.model.Product;
 import by.tms.hackathonserver.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,9 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/getAllProducts")
+//    @CrossOrigin(origins = "http://ec2-18-185-127-15.eu-central-1.compute.amazonaws.com:8080")
     public ResponseEntity<?> getAllProducts() {
-        List<Product> allProductByCategory = productService.getAll();
+        List<ProductResponse> allProductByCategory = productService.getAll();
         return new ResponseEntity<>(allProductByCategory, HttpStatus.OK);
     }
 
