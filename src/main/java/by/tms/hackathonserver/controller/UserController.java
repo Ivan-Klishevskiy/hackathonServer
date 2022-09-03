@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login")
+    @GetMapping("/loginUser")
     public ResponseEntity<?>login(@RequestBody LoginDto user){
         return new ResponseEntity<>(userService.getUser(user.getEmail(), user.getPassword()), HttpStatus.OK);
     }
