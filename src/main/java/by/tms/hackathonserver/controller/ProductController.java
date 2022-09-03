@@ -19,8 +19,13 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @GetMapping("/productStartWith/{line}")
+    public ResponseEntity<?> productStartWith(@PathVariable String line) {
+        List<ProductResponse> allProductByCategory = productService.getProductStartWith(line);
+        return new ResponseEntity<>(allProductByCategory, HttpStatus.OK);
+    }
+
     @GetMapping("/getAllProducts")
-//    @CrossOrigin(origins = "http://ec2-18-185-127-15.eu-central-1.compute.amazonaws.com:8080")
     public ResponseEntity<?> getAllProducts() {
         List<ProductResponse> allProductByCategory = productService.getAll();
         return new ResponseEntity<>(allProductByCategory, HttpStatus.OK);

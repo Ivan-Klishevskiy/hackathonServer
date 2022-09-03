@@ -39,6 +39,19 @@ public class ProductService {
         return listProductResponse;
     }
 
+    public List<ProductResponse> getProductStartWith(String line){
+        line =line.substring(0, 1).toUpperCase() + line.substring(1).toLowerCase();
+        List<Product> allProducts = productRepository.findByTitleStartingWith(line);
+        List<ProductResponse> listProductResponse = new ArrayList<>();
+        for (Product tempProduct : allProducts) {
+            User tempUser = userRepository.findByUsername(tempProduct.getCreatorUsername());
+            ProductResponse productResponse = mapper.map(tempProduct, ProductResponse.class);
+            productResponse.setUser(tempUser);
+            listProductResponse.add(productResponse);
+        }
+        return listProductResponse;
+    }
+
     public Product save(Product product) {
 
         Optional<User> dataUser = Optional.ofNullable(userRepository.findByUsername(product.getCreatorUsername()));
